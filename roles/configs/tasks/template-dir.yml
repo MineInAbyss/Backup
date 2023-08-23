@@ -1,5 +1,5 @@
 - set_fact:
-    template_destination: "{% if dest is defined %}{{ dest }}{% else %}{{ lookup('ansible.builtin.env', 'HOME') }}{% endif %}"
+    templates_destination: "{% if dest is defined %}{{ dest }}{% else %}{{ lookup('ansible.builtin.env', 'HOME') }}{% endif %}"
 
 - name: Ensure directory structure exists
   file:
