@@ -6,7 +6,7 @@
     path: '{{ templates_destination }}/{{ dir.path }}'
     state: directory
   with_filetree: '{{ templates_source }}'
-  when: item.state == 'directory'
+  when: dir.state == 'directory'
   loop_control:
     loop_var: dir
 
@@ -15,6 +15,6 @@
     src: '{{ template.src }}'
     dest: '{{ templates_destination }}/{{ template.path | regex_replace(".j2$", "") }}'
   with_filetree: '{{ templates_source }}'
-  when: item.state == 'file'
+  when: template.state == 'file'
   loop_control:
     loop_var: template
