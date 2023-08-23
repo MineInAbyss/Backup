@@ -2,15 +2,19 @@
     template_destination: "{% if dest is defined %}{{ dest }}{% else %}{{ lookup('ansible.builtin.env', 'HOME') }}{% endif %}"
 
 - name: Ensure directory structure exists
-  ansible.builtin.file:
-    path: '{{ templates_destination }}/{{ item.path }}'
+  file:
+    path: '{{ templates_destination }}/{{ dir.path }}'
     state: directory
   with_filetree: '{{ templates_source }}'
   when: item.state == 'directory'
+  loop_control:
+    loop_var: dir
 
 - name: Ensure files are populated from templates
-  ansible.builtin.template:
-    src: '{{ item.src }}'
-    dest: '{{ templates_destination }}/{{ item.path }}'
+  template:
+    src: '{{ template.src }}'
+    dest: '{{ templates_destination }}/{{ template.path | regex_replace(".j2$", "") }}'
   with_filetree: '{{ templates_source }}'
   when: item.state == 'file'
+  loop_control:
+    loop_var: template
