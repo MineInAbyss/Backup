@@ -101,9 +101,10 @@ proxies:
     online-mode: true
   proxy-protocol: false
   velocity:
-    enabled: true
+    {% set secret_file = lookup('ansible.builtin.file', '/run/secrets/velocity_forwarding_secret', errors='ignore') %}
+    enabled: {{ secret_file is not defined | default(false) }}
     online-mode: true
-    secret: "{{ lookup('ansible.builtin.file', '/run/secrets/velocity_forwarding_secret') }}"
+    secret: {{ secret_file is not defined | default(false) | ternary(secret_file, "'{{ secret_file }}'") }}
 scoreboards:
   save-empty-scoreboard-teams: false
   track-plugin-scoreboards: false
