@@ -1,7 +1,7 @@
 - name: Copy server-specific configurations
   include_tasks: copy-dir.yml
   vars:
-    src: "servers/{{ item }}/sync"
+    src: "servers/{{ item }}/sync/"
   loop: "{{ servers[server_name] }}"
 
 - name: Copy templates
